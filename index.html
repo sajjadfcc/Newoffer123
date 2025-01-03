@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year Offer 2025</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('2025xn.jpg'); /* Ensure this image is available */
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            color: #333;
+        }
+
+        .header {
+            background-color: rgba(128, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 40px;
+            margin: 0;
+        }
+
+        .header p {
+            font-size: 20px;
+            margin: 10px 0 0;
+        }
+
+        .offer, .share-section, .comments-section {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .offer h2, .comments-section h3 {
+            color: maroon;
+            font-size: 30px;
+            margin: 0 0 10px;
+        }
+
+        .offer button, .share-button {
+            background-color: #ff3366;
+            color: white;
+            font-size: 18px;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .offer button:hover, .share-button:hover {
+            background-color: #ff6699;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress {
+            height: 20px;
+            background-color: #28a745;
+            width: 0;
+            transition: width 0.3s;
+        }
+
+        .share-buttons {
+            margin: 20px 0;
+        }
+
+        .share-buttons img {
+            width: 50px; /* Adjust size as needed */
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+        }
+
+        .comments-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .comments-list li {
+            background: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .comment-form input, .comment-form textarea {
+            width: calc(100% - 20px);
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>FREE 100GB</h1>
+    <p>Valid for 3 Months</p>
+</div>
+
+<div class="offer">
+    <h2>FREE 100GB DATA PLAN FOR ALL NETWORKS</h2>
+    <input type="text" id="phone-number" placeholder="Enter your number" />
+    <br><br>
+    <select id="sim-card">
+        <option value="">Select your SIM card</option>
+        <option value="zong">Zong</option>
+        <option value="telenor">Telenor</option>
+        <option value="jazz">Jazz</option>
+        <option value="ufone">Ufone</option>
+        <option value="warid">Warid</option>
+    </select>
+    <br><br>
+    <button onclick="startProcessing()">Submit</button>
+</div>
+
+<div id="result" class="share-section" style="display: none;">
+    <h2>Congratulations! Your Number is Eligible to Receive free 100GB Data, Valid for 3 Months!</h2>
+    <p>To get your free 100GB data, click the button below and share this with 5 groups or 10 friends on your preferred messaging app!</p>
+    <div class="progress-bar">
+        <div id="progress-bar" class="progress"></div>
+    </div>
+    <p>After sending the message, you will now get your free 100GB data on your Mobile within 15 minutes.</p>
+    
+    <button class="share-button" onclick="shareOnWhatsApp()">Share</button>
+    <p>This offer has been shared <span id="share-count">0</span> times!</p>
+    <p id="congratulations-message" style="display: none; color: green;">Congratulations! Please wait 15 minutes.</p>
+
+    <div class="share-buttons">
+        <a href="#" onclick="shareOnFacebook()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Share on Facebook">
+        </a>
+    </div>
+
+    <p id="likes-count">Likes: <span id="likes">195000</span></p>
+</div>
+
+<div class="comments-section">
+    <h3>Leave a Comment</h3>
+    <div class="comment-form">
+        <input type="text" id="comment-name" placeholder="Your Name" required />
+        <textarea id="comment-text" placeholder="Your Comment" required></textarea>
+        <button onclick="addComment()">Submit Comment</button>
+    </div>
+    <h3>Comments:</h3>
+    <ul id="comments-list" class="comments-list"></ul>
+</div>
+
+<div class="footer">
+    &copy; 2025 New Year Offer. All rights reserved.
+</div>
+
+<script>
+    let shareCount = 0; // Initialize share count
+    let likesCount = 195000; // Initialize likes count
+    const randomComments = [
+        "This offer is amazing! Can't wait to get my data!",
+        "I shared it with my friends. Hope they enjoy it too!",
+        "Just got my 100GB! Thank you for this offer!"
+    ];
+
+    function startProcessing() {
+        const phoneNumber = document.getElementById('phone-number').value;
+        const simCard = document.getElementById('sim-card').value;
+
+        // Simple phone number validation
+        const phoneRegex = /^[0-9]{10,15}$/; // Adjust based on your requirements
+        if (!phoneNumber || !phoneRegex.test(phoneNumber) || !simCard) {
+            alert('Please enter a valid phone number (10-15 digits) and select a SIM card.');
+            return;
+        }
+
+        document.querySelector('.offer').style.display = 'none';
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 2;
+            document.getElementById('progress-bar').style.width = progress + '%';
+
+            if (progress >= 100) {
+                clearInterval(interval);
+            }
+        }, 50);
+
+        // Display random comments
+        displayRandomComments();
+        
+        // Start auto-incrementing likes every 3 seconds
+        incrementLikes();
+    }
+
+    function shareOnWhatsApp() {
+        const message = "I've just received 100GB free data! Check it out!";
+        const url = window.location.href;
+        window.open(`https://wa.me/?text=${encodeURIComponent(message + " " + url)}`, '_blank');
+        
+        // Increment share count and check if it reaches 10
+        incrementShareCount();
+    }
+
+    function shareOnFacebook() {
+        const url = window.location.href;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    function incrementShareCount() {
+        shareCount++;
+        document.getElementById('share-count').innerText = shareCount; // Update share count display
+        
+        // Check if the share count has reached 10
+        if (shareCount >= 10) {
+            document.getElementById('congratulations-message').style.display = 'block';
+        }
+    }
+
+    function incrementLikes() {
+        setInterval(() => {
+            likesCount++;
+            document.getElementById('likes').innerText = likesCount.toLocaleString(); // Update likes count display
+        }, 3000); // Increment likes every 3000 milliseconds (3 seconds)
+    }
+
+    function displayRandomComments() {
+        const commentsList = document.getElementById('comments-list');
+        randomComments.forEach(comment => {
+            const newComment = document.createElement('li');
+            newComment.innerHTML = `<strong>User:</strong> ${comment}`;
+            commentsList.appendChild(newComment);
+        });
+    }
+
+    function addComment() {
+        const name = document.getElementById('comment-name').value;
+        const comment = document.getElementById('comment-text').value;
+
+        if (!name || !comment) {
+            alert('Please fill out both fields.');
+            return;
+        }
+
+        const commentsList = document.getElementById('comments-list');
+        const newComment = document.createElement('li');
+        newComment.innerHTML = `<strong>${name}:</strong> ${comment}`;
+        commentsList.appendChild(newComment);
+
+        // Clear the input fields
+        document.getElementById('comment-name').value = '';
+        document.getElementById('comment-text').value = '';
+    }
+</script>
+
+</body>
+</html>
